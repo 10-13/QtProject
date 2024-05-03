@@ -39,6 +39,14 @@ namespace qtproject
                         return i;
                 return {};
             }
+
+            std::string operator*() {
+                return Content();
+            }
+
+            std::shared_ptr<DValue> operator[](std::string Name) {
+                return At(Name);
+            }
         };
     }
 }
