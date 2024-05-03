@@ -4,3 +4,5 @@ MODULE.bazel.lock
 **/bazel-out
 **/bazel-testlogs
 **/bazel-QtProject
+
+**/local_srcs
