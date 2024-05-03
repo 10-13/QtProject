@@ -2,15 +2,22 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QLabel>
+#include <QLocale>
 #include <QtWidgets/QStylePainter>
 
 class MyWidget : public QWidget {
+	private:
+	QLabel* text;
 public:
-	MyWidget() {
-		QLabel* label = new QLabel(this);
-		label->setText(QT_VERSION_STR);
+	MyWidget() : text(new QLabel(this)) {
+		text->setText(QT_VERSION_STR);
 
 		setWindowTitle("Hello world!");
+	}
+
+	void resizeEvent(QResizeEvent *event) override {
+		QLocale loc{};
+		text->setText(loc.toString(this->width()) + ":" + loc.toString(this->height()));
 	}
 };
 
