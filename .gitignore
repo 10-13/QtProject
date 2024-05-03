@@ -1,1 +1,2 @@
-MODULE
+MODULE.bazel
+MODULE.bazel.lock
