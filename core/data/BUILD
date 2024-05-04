@@ -8,3 +8,14 @@ cc_library(
         "//visibility:public",
     ],
 )
+
+cc_library(
+    name="dvrequire",
+    hdrs=["DVRequire.h"],
+    deps=[
+        ":dvalue",
+    ],
+    visibility=[
+        "//visibility:public",
+    ],
+)
