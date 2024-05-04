@@ -9,7 +9,7 @@ namespace qtproject {
             // Returns value greater than zero
             using CheckerFunction = double (*)(DV, DV);
 
-            // Used to generate user friendly output for outfit result
+            // Used to generate user friendly output for result
             std::string Name;
             std::string Description;
 
