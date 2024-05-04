@@ -27,10 +27,18 @@ namespace qtproject
                 return Name_;
             }
 
-            std::string Content() {
+            size_t Size() {
+                return Subvalues_.size();
+            }
+
+            bool IsValue() {
+                return Subvalues_.size() == 0;
+            }
+
+            std::string Content(size_t index = 0) {
                 if(Subvalues_.size() == 0)
                     return "";
-                return Subvalues_[0]->Name_;
+                return Subvalues_[index]->Name_;
             }
 
             std::shared_ptr<DValue> At(std::string Name) {
@@ -40,12 +48,24 @@ namespace qtproject
                 return {};
             }
 
+            std::shared_ptr<DValue> At(size_t index) {
+                return Subvalues_[index];
+            }
+
             std::string operator*() {
                 return Content();
             }
 
             std::shared_ptr<DValue> operator[](std::string Name) {
                 return At(Name);
+            }
+
+            std::string operator[](size_t index) {
+                return Content(index);
+            }
+
+            static std::shared_ptr<DValue> Create(std::string Name) {
+                return std::make_shared<DValue>(Name);
             }
         };
     }
