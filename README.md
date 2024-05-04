@@ -12,6 +12,14 @@ To build project used rules from: https://github.com/Vertexwahn/
 
 See exemples: https://github.com/Vertexwahn/rules_qt6/blob/main/tests/qml_demo/BUILD.bazel
 
+Если вдруг не компилируется приложение с ошибкой о том что не найдена некоторая библиотека, то в репозитории прописываем:
+```bash
+bazel clean --expunge
+rm -dr `bazel info repository_cache`
+bazel clean --expunge
+sudo apt-get install qt6-base-dev
+bazel run //test:hw --config=[ваш конфиг]
+```
 
 ### Workflow
 Во время работы с репозиторием будет использоваться интересная схемма, часто применяемая в крупных проектах.
