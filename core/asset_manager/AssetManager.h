@@ -29,7 +29,7 @@ namespace qtproject
                     auto& item = j["Subvalues_"][i];
                     dvalue->Add(item["Name_"].template get<std::string>());
                     if (!item["Subvalues_"].empty()) {
-                        ReadJson(item, dvalue->At(item["Subvalues_"]["Name_"].template get<std::string>()));
+                        ReadJson(item, dvalue->At(item["Name_"].template get<std::string>()));
                     }
                 }
             }
