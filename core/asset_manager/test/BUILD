@@ -5,7 +5,6 @@ filegroup(
     srcs=[
         "input.json",
         "output.json",
-        "text.txt",
     ],
     tags = [
         "input_files",
