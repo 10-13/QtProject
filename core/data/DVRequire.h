@@ -44,14 +44,50 @@ namespace qtproject
             };
 
             class StructureChecker {
+                private:
+                static bool CheckFlag(uint16_t flags, uint16_t target) {
+                    return (flags & target) == target;
+                }
+
+                static bool CheckBranch(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
+                    for(size_t i = 0; i < pattern->Size(); i++)
+                        if((CheckFlag(flags, Flags::TreatPatternValuesAsPath) || !pattern->IsValue()) && out->At(pattern->Content(i)) == std::shared_ptr<DValue>{})
+                            return false;
+                    return true;
+                }
+
+                static bool DeepCheckBranch(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
+                    if(!CheckBranch(pattern, out, flags))
+                        return false;
+                    
+                    for(size_t i = 0; i < pattern->Size(); i++)
+                    {
+                        if(!pattern->IsValue() && !DeepCheckBranch(pattern->At(i), out->At(pattern->Content(i)), flags))
+                            return false;
+                    }
+                    return true;
+                }
+
                 public:
+                enum Flags {
+                    Default                     = 0,
+                    TreatPatternValuesAsPath    = 0b0001,
+                };
+
                 std::shared_ptr<DValue> Pattern;
+                uint16_t Flags;
 
                 StructureChecker() = default;
 
-                bool CheckValue(std::shared_ptr<DValue> source);
-                void RestorePathes(std::shared_ptr<DValue> source);
-                std::vector<InputRequest> GetRequiredInputs(std::shared_ptr<DValue> source);
+                bool CheckValue(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                    if(flags == 0)
+                        flags = Flags;
+                    return DeepCheckBranch(Pattern, source, flags);
+                }
+
+                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0);
+
+                std::vector<InputRequest> GetRequiredInputs(std::shared_ptr<DValue> source, uint16_t flags = 0);
 
                 static bool CheckValue(std::string&& source, std::string request);
                 static void RestorePath(std::shared_ptr<DValue> source, std::vector<std::string> path);
