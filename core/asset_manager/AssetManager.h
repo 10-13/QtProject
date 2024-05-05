@@ -34,10 +34,10 @@ namespace qtproject
                 }
             }
 
-            void WriteJson(json& j, const std::shared_ptr<DValue>& value) {
-                j["Name_"] = value->Name();
-                if (value->Size() > 0) {
-                    for(auto& item : value->Subvalues()) {
+            void WriteJson(json& j, const std::shared_ptr<DValue>& dvalue) {
+                j["Name_"] = dvalue->Name();
+                if (dvalue->Size() > 0) {
+                    for(auto& item : dvalue->Subvalues()) {
                         WriteJson(j["Subvalues_"], item);
                     }
                 }
