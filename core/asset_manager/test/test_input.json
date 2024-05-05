@@ -1,38 +1,42 @@
 {
-    "Data":[
-    {
-    "Name_":"Price",
-    "Subvalues_":[
-        {
-            "Name_":"Weekend price",
-            "Subvalues_":[
-                {
-                    "Name_":"100",
-                    "Subvalues_":[]
-
-                }
+    "Data": [
+      {
+        "Name_": "Price",
+        "Subvalues_": [
+          {
+            "Name_": "Weekend price",
+            "Subvalues_": [
+              {
+                "Name_": "100",
+                "Subvalues_": [
+                  
+                ]
+              }
             ]
-        },
-        {
-            "Name_":"Off season price",
-            "Subvalues_":[
-                {
-                    "Name_":"50",
-                    "Subvalues_":[]
-                }
+          },
+          {
+            "Name_": "Off season price",
+            "Subvalues_": [
+              {
+                "Name_": "50",
+                "Subvalues_": [
+                  
+                ]
+              }
             ]
-            
-        }
+          }
+        ]
+      },
+      {
+        "Name_": "Size",
+        "Subvalues_": [
+          {
+            "Name_": "M",
+            "Subvalues_": [
+              
+            ]
+          }
+        ]
+      }
     ]
-},
-{
-    "Name_":"Size",
-    "Subvalues_":[
-        {
-            "Name_":"M",
-            "Subvalues_":[]
-        }
-    ]
-}
-]
-}
+  }
