@@ -5,8 +5,10 @@
 
 
 int main() {
-    std::ifstream input_json("input.json", std::ios::binary);
-    std::ofstream output_json("output.json", std::ios::binary);
+    using  qtproject::data::AssetManager;
+
+    std::ifstream input_json("input.json");
+    std::ofstream output_json("output.json");
 
     if (!input_json){
         std::cerr << "Error opening input.json\n";
@@ -23,9 +25,9 @@ int main() {
         return 1;
     }
 
-    qtproject::data::AssetManager::Init(&input_json, &output_json);
+    AssetManager::Init(&input_json, &output_json);
     auto data = qtproject::data::AssetManager::Read();
-    qtproject::data::AssetManager::Write(data);
+    AssetManager::Write(data);
 
     return 0;
 }

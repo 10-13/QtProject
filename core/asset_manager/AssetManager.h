@@ -75,10 +75,10 @@ namespace qtproject
                 }
 
                 json j;
-                *manager_->is_ >> j["Data"];
+                *manager_->is_ >> j;
 
                 std::vector<std::shared_ptr<DValue>> result;
-                for(auto& item : j["Data"]) {
+                for(auto& item : j) {
                     result.push_back(DValue::Create(item["Name_"].template get<std::string>()));
                     if (!item["Subvalues_"].empty()) {
                         manager_->ReadJson(item, result.back());
@@ -93,9 +93,7 @@ namespace qtproject
                 if (!InitedToWrite())
                     return;
 
-                json j;
-                j["Data"] = std::vector<json>(data.size());
-                j = j["Data"];
+                json j = std::vector<json>(data.size());
 
                 for(size_t i = 0; i < data.size(); ++i) {
                     manager_->WriteJson(j[i], data[i]);
