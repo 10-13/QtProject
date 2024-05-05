@@ -10,6 +10,37 @@ namespace qtproject
             struct InputRequest {
                 std::string Path;
                 std::string Request;
+
+                enum class Type {
+                    User = 'u',
+                    Numeric = 'n',
+                    Floating = 'f',
+                    Date = 'd',
+                    Variants = 'v',
+                    VariantsOrUser = 'i',
+                };
+
+                Type GetRequestType() {
+                    if(Request.size() < 2)
+                        return Type::User;
+                    if(Request[0] != '!')
+                        return Type::User;
+                    switch (Request[1])
+                    {
+                    case (char)Type::Numeric:
+                        return Type::Numeric;
+                    case (char)Type::Date:
+                        return Type::Date;
+                    case (char)Type::Floating:
+                        return Type::Floating;
+                    case (char)Type::Variants:
+                        return Type::Variants;
+                    case (char)Type::VariantsOrUser:
+                        return Type::VariantsOrUser;
+                    default:
+                        return Type::User;
+                    }
+                }
             };
 
             class StructureChecker {
