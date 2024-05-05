@@ -24,11 +24,12 @@ namespace qtproject
             AssetManager(std::ostream* os) : os_(os) {
             }
 
-            void ReadJson(const json& j, std::shared_ptr<DValue> value) {
-                for(const auto& item : j["Subvalues_"].items()) {
-                    value->Add(item.at("Name_").template get<std::string>());
+            void ReadJson(const json& j, std::shared_ptr<DValue> dvalue) {
+                for(size_t i = 0; i < j["Subvalues_"].size(); ++i) {
+                    auto& item = j["Subvalues_"][i];
+                    dvalue->Add(item["Name_"].template get<std::string>());
                     if (!item["Subvalues_"].empty()) {
-                        ReadJson(item, value->At(item["Name_"].template get<std::string>()));
+                        ReadJson(item, dvalue->At(item["Subvalues_"]["Name_"].template get<std::string>()));
                     }
                 }
             }
@@ -71,7 +72,9 @@ namespace qtproject
                     return {};
                 }
 
-                json j = json::parse(*manager_->is_);
+                json j;
+                *manager_->is_ >> j;
+
                 std::vector<std::shared_ptr<DValue>> result;
                 for(auto& item : j["Data"]) {
                     result.push_back(DValue::Create(item["Name_"].template get<std::string>()));
