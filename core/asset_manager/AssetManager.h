@@ -36,8 +36,9 @@ namespace qtproject
 
             void WriteJson(json& j, const std::shared_ptr<DValue>& dvalue) {
                 j["Name_"] = dvalue->Name();
+                j["Subvalues_"] = std::vector<json>(dvalue->Size());
+
                 if (dvalue->Size() > 0) {
-                    j["Subvalues_"] = std::vector<json>(dvalue->Size());
                     for(size_t i = 0; i < dvalue->Size(); ++i){
                         WriteJson(j["Subvalues_"][i], dvalue->Subvalues()[i]);
                     }
@@ -81,6 +82,8 @@ namespace qtproject
                     result.push_back(DValue::Create(item["Name_"].template get<std::string>()));
                     if (!item["Subvalues_"].empty()) {
                         manager_->ReadJson(item, result.back());
+                    } else {
+                        result.back()->Add(item["Name_"].template get<std::string>());
                     }
                 }
                 return result;
