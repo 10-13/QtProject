@@ -75,7 +75,7 @@ namespace qtproject
                 }
 
                 json j;
-                *manager_->is_ >> j;
+                *manager_->is_ >> j["Data"];
 
                 std::vector<std::shared_ptr<DValue>> result;
                 for(auto& item : j["Data"]) {
