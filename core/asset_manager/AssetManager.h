@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "core/includes/Includes.h"
 

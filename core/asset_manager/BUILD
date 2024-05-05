@@ -5,6 +5,7 @@ cc_library(
     hdrs=["AssetManager.h"],
     deps=[
         "//core/includes:def_includes",
+        "@nlohmann_json//:json",
     ],
     visibility=[
         "//visibility:public",
