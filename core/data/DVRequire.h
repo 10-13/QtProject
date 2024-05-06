@@ -68,6 +68,35 @@ namespace qtproject
                     return true;
                 }
 
+                void DeepRestorePathes(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
+                    if (pattern->IsValue() && !CheckFlag(flags, Flags::TreatPatternValuesAsPath)) {
+                        return;
+                    }
+
+                    for (size_t i = 0; i < pattern->Size(); i++) {
+                        std::shared_ptr<DValue> out_child;
+                        if (out->At(pattern->Content(i)) == std::shared_ptr<DValue>{}) {
+                            out_child = out->Add(pattern->Content(i));
+                        } else {
+                            out_child = out->At(pattern->Content(i));
+                        }
+
+                        DeepRestorePathes(pattern->At(i), out_child, flags);
+                    }
+                }
+
+                void DeepRestorePath(std::shared_ptr<DValue> out, std::vector<std::string>::iterator it, std::vector<std::string>::iterator end) {
+                    std::shared_ptr<DValue> out_child;
+                    if (out->At(*it) == std::shared_ptr<DValue>{}) {
+                        out_child = out->Add(*it);
+                    } else {
+                        out_child = out->At(*it);
+                    }
+                    if (next(it) != end) {
+                        DeepRestorePath(out_child, next(it), end);
+                    }
+                }
+
                 public:
                 enum Flags {
                     Default                     = 0,
@@ -85,12 +114,17 @@ namespace qtproject
                     return DeepCheckBranch(Pattern, source, flags);
                 }
 
-                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0);
+                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                    DeepRestorePathes(Pattern, source, flags);
+                }
 
                 std::vector<InputRequest> GetRequiredInputs(std::shared_ptr<DValue> source, uint16_t flags = 0);
 
                 static bool CheckValue(std::string&& source, std::string request);
-                static void RestorePath(std::shared_ptr<DValue> source, std::vector<std::string> path);
+
+                static void RestorePath(std::shared_ptr<DValue> source, std::vector<std::string> path) {
+                    DeepRestorePath(source, path.begin(), path.end());
+                }
             };
         }
     }
