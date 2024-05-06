@@ -6,7 +6,7 @@ namespace qtproject {
             return false;
         }
 
-        bool DValueSerializer::Deserialize(std::ostream& out,const <std::shared_ptr<DValue>& dvalues) {
+        bool DValueSerializer::Deserialize(std::ostream& out, std::shared_ptr<DValue>& dvalues) {
             return false;
         }
     }
