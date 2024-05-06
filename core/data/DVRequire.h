@@ -8,8 +8,9 @@ namespace qtproject
         namespace require
         {
             struct InputRequest {
-                std::string Path;
+                std::vector<std::string> Path;
                 std::string Request;
+                size_t Index;
 
                 enum class Type {
                     User = 'u',
@@ -20,7 +21,7 @@ namespace qtproject
                     VariantsOrUser = 'i',
                 };
 
-                Type GetRequestType() {
+                Type GetRequestType() const {
                     if(Request.size() < 2)
                         return Type::User;
                     if(Request[0] != '!')
@@ -68,10 +69,14 @@ namespace qtproject
                     return true;
                 }
 
+                using Reciver = void(*)(const InputRequest& request);
+
                 public:
                 enum Flags {
                     Default                     = 0,
                     TreatPatternValuesAsPath    = 0b0001,
+                    IgnoreContentRequests       = 0b0010,
+                    UpdateOldValues             = 0b0100,
                 };
 
                 std::shared_ptr<DValue> Pattern;
@@ -87,7 +92,7 @@ namespace qtproject
 
                 void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0);
 
-                std::vector<InputRequest> GetRequiredInputs(std::shared_ptr<DValue> source, uint16_t flags = 0);
+                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0)ж
 
                 static bool CheckValue(std::string&& source, std::string request);
                 static void RestorePath(std::shared_ptr<DValue> source, std::vector<std::string> path);

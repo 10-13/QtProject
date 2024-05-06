@@ -53,6 +53,13 @@ namespace qtproject
                 return {};
             }
 
+            std::shared_ptr<DValue> At(std::string& Name) {
+                for(auto i : Subvalues_)
+                    if(i->Name_ == Name)
+                        return i;
+                return {};
+            }
+
             std::shared_ptr<DValue> At(size_t index) {
                 return Subvalues_[index];
             }
