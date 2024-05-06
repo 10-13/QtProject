@@ -130,9 +130,3 @@ fetch_qt6()
 load("@rules_qt//tools:qt_toolchain.bzl", "register_qt_toolchains")
 
 register_qt_toolchains()
-
-git_repository(
-  name = "nlohmann_json",
-  remote = "https://github.com/nlohmann/json.git",
-  tag = "v3.11.3",
-)
