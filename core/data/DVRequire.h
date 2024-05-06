@@ -86,7 +86,7 @@ namespace qtproject
                     }
                 }
 
-                void DeepRestorePath(std::shared_ptr<DValue> out, std::vector<std::string>::iterator it, std::vector<std::string>::iterator end) {
+                static void DeepRestorePath(std::shared_ptr<DValue> out, std::vector<std::string>::iterator it, std::vector<std::string>::iterator end) {
                     std::shared_ptr<DValue> out_child;
                     if (out->At(*it) == std::shared_ptr<DValue>{}) {
                         out_child = out->Add(std::forward<std::string>(*it));
