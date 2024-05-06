@@ -19,5 +19,4 @@
 DV_REQUIREMENT("block") {
     pattern->Add("Type");
     pattern->Add("Firm");
-    pattern->Add
 }
