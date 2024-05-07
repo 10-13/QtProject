@@ -7,7 +7,7 @@ namespace qtproject {
             using DV = std::shared_ptr<qtproject::data::DValue>;
         public:
             // Returns value greater than zero
-            using CheckerFunction = double (*)(DV, DV);
+            using Raiting = double (*)(DV, DV);
 
             // Used to generate user friendly output for result
             std::string Name;
@@ -21,7 +21,7 @@ namespace qtproject {
 
             Rule() = delete;
 
-            Rule(Type ruletype, CheckerFunction func, double max = 1.) : RuleType_(ruletype), Max_(max), Function_(func) { }
+            Rule(Type ruletype, Raiting func, double max = 1.) : RuleType_(ruletype), Max_(max), Function_(func) { }
 
             Type GetType() {
                 return RuleType_;
@@ -38,7 +38,7 @@ namespace qtproject {
         private:
             Type RuleType_;
             double Max_;
-            CheckerFunction Function_;
+            Raiting Function_;
         };
     }
 }
