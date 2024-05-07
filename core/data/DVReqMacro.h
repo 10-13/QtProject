@@ -1,22 +1,28 @@
+#pragma once
+
 #include "DVGlobalRequirements.h"
 
-#define __MERGE(a,b) a##b
-#define __MERGE2(a,b) __MERGE(a, b)
+#define __SRC_DV_REQ2(name, pattern) \
+    void __bm##name(std::shared_ptr<qtproject::data::DValue>); \
+    qtproject::data::require::Requirement* name = new qtproject::data::require::Requirement(#name, __bm##name); \
+    void __bm##name(std::shared_ptr<qtproject::data::DValue> pattern) 
 
-#define __DV_BUILD_NAME() __MERGE2(__dv_req,__COUNTER__)
+#define DV_REQUIREMENT(name) __SRC_DV_REQ2(name, pattern)
+#define DV_REQUIREMENT_P(name, pattern__) __SRC_DV_REQ2(name, pattern__)
 
-#define __SRC_DV_REQ(nameArg, PID) \
-    void __bm##PID(std::shared_ptr<qtproject::data::DValue>); \
-    qtproject::data::require::Requirement* req = new qtproject::data::require::Requirement(nameArg, __bm##PID); \
-    void __bm##PID(std::shared_ptr<qtproject::data::DValue> pattern) 
-
-#define __SRC_DV_REQ2(nameArg, PID) __SRC_DV_REQ(nameArg, PID)
-
-#define DV_REQUIREMENT(name) __SRC_DV_REQ2(name, __DV_BUILD_NAME())
-
-
-
-DV_REQUIREMENT("block") {
-    pattern->Add("Type");
-    pattern->Add("Firm");
+namespace {
+    DV_REQUIREMENT(block) {
+        pattern->Add("Type")->Add("!v body hands head legs");
+        pattern->Add("Firm")->Add("!u");
+    }
 }
+
+class MyClass {
+    void SomeMethodWithData(std::shared_ptr<qtproject::data::DValue> data) {
+        if(!block->GetChecker().CheckValue(data))
+            throw std::exception();
+    }
+};
+
+
+

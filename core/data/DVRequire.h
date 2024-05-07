@@ -1,3 +1,5 @@
+#pragma once
+
 #include "core/includes/Includes.h"
 #include "core/data/DValue.h"
 
@@ -69,7 +71,7 @@ namespace qtproject
                     return true;
                 }
 
-                void DeepRestorePathes(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
+                void DeepRestorePathes(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) const {
                     if (pattern->IsValue() && !CheckFlag(flags, Flags::TreatPatternValuesAsPath)) {
                         return;
                     }
@@ -112,17 +114,17 @@ namespace qtproject
 
                 StructureChecker() = default;
 
-                bool CheckValue(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                bool CheckValue(std::shared_ptr<DValue> source, uint16_t flags = 0) const {
                     if(flags == 0)
                         flags = Flags;
                     return DeepCheckBranch(Pattern, source, flags);
                 }
 
-                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0) const {
                     DeepRestorePathes(Pattern, source, flags);
                 }
 
-                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0)ж
+                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0) const;
 
                 static bool CheckValue(std::string&& source, std::string request);
 
