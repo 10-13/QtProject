@@ -11,7 +11,11 @@ cc_library(
 
 cc_library(
     name="dvrequire",
-    hdrs=["DVRequire.h"],
+    hdrs=[
+        "DVRequire.h",
+        "DVGlobalRequirements.h",
+        "DVReqMacro.h"
+    ],
     deps=[
         ":dvalue",
     ],
