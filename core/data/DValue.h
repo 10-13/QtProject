@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/includes/Includes.h"
+#include <utility>
 
 namespace qtproject
 {
@@ -9,7 +10,7 @@ namespace qtproject
         class DValue {
             private:
             std::vector<std::shared_ptr<DValue>> Subvalues_;
-            std::string Name_{"ERROR"};
+            std::string Name_{""};
 
             public:
             DValue() = default;
@@ -25,25 +26,36 @@ namespace qtproject
                 return r;
             }
 
-            std::string Name() {
+            std::string& Name() {
                 return Name_;
             }
 
-            size_t Size() {
+            const std::string& Name() const {
+                return Name_;
+            }
+
+            size_t Size() const {
                 return Subvalues_.size();
             }
 
-            bool IsValue() {
+            bool IsValue() const {
                 return Subvalues_.size() == 0;
             }
 
-            std::string Content(size_t index = 0) {
+            std::string& Content(size_t index = 0) {
                 if(Subvalues_.size() == 0)
-                    return "";
+                    this->Add("");
                 return Subvalues_[index]->Name_;
             }
 
-            std::shared_ptr<DValue> At(std::string Name) {
+            std::shared_ptr<DValue> At(std::string&& Name) {
+                for(auto i : Subvalues_)
+                    if(i->Name_ == Name)
+                        return i;
+                return {};
+            }
+
+            std::shared_ptr<DValue> At(std::string& Name) {
                 for(auto i : Subvalues_)
                     if(i->Name_ == Name)
                         return i;
@@ -54,20 +66,30 @@ namespace qtproject
                 return Subvalues_[index];
             }
 
-            std::string operator*() {
+            static std::shared_ptr<DValue> AtPath(std::shared_ptr<DValue> value, std::vector<std::string>& Path) {
+                auto res = value;
+                for(auto& i : Path) {
+                    if(res->At(i) == std::shared_ptr<DValue>{})
+                        return std::shared_ptr<DValue>{};
+                    res = res->At(i);
+                }
+                return res;
+            }
+
+            std::string& operator*() {
                 return Content();
             }
 
             std::shared_ptr<DValue> operator[](std::string Name) {
-                return At(Name);
+                return At(std::forward<std::string>(Name));
             }
 
-            std::string operator[](size_t index) {
+            std::string& operator[](size_t index) {
                 return Content(index);
             }
 
             static std::shared_ptr<DValue> Create(std::string Name) {
-                return std::make_shared<DValue>(Name);
+                return std::make_shared<DValue>(std::forward<std::string>(Name));
             }
         };
     }

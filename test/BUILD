@@ -6,5 +6,6 @@ qt_cc_binary(
 	deps=[
 		"@rules_qt//:qt_core",
 		"@rules_qt//:qt_widgets",
+		"//core/data:dvrequire"
 	],
 )
