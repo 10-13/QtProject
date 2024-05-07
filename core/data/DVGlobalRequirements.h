@@ -31,7 +31,7 @@ namespace qtproject {
                 static std::map<std::string, StructureChecker> Templates_;
 
             public:
-                static StructureChecker& GetByRequirementName(std::string Name) {
+                static const StructureChecker& GetByRequirementName(std::string Name) {
                     return Templates_[Name];
                 }
                 static void AddRequirement(Requirement* req) {
