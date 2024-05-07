@@ -16,6 +16,7 @@ namespace qtproject {
                 void PushToGlob_();
             public:
                 Requirement(std::string Name, BuildMethod builder) {
+                    Checker.Pattern = std::make_shared<DValue>(Name);
                     builder(Checker.Pattern);
                 }
 
