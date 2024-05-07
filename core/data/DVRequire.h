@@ -77,7 +77,7 @@ namespace qtproject
                     for (size_t i = 0; i < pattern->Size(); i++) {
                         std::shared_ptr<DValue> out_child;
                         if (out->At(pattern->Content(i)) == std::shared_ptr<DValue>{}) {
-                            out_child = out->Add(pattern->Content(i));
+                            out_child = out->Add(std::forward<std::string>(pattern->Content(i)));
                         } else {
                             out_child = out->At(pattern->Content(i));
                         }
@@ -86,12 +86,12 @@ namespace qtproject
                     }
                 }
 
-                void DeepRestorePath(std::shared_ptr<DValue> out, std::vector<std::string>::iterator it, std::vector<std::string>::iterator end) {
+                static void DeepRestorePath(std::shared_ptr<DValue> out, std::vector<std::string>::iterator it, std::vector<std::string>::iterator end) {
                     std::shared_ptr<DValue> out_child;
                     if (out->At(*it) == std::shared_ptr<DValue>{}) {
-                        out_child = out->Add(*it);
+                        out_child = out->Add(std::forward<std::string>(*it));
                     } else {
-                        out_child = out->At(*it);
+                        out_child = out->At(std::forward<std::string>(*it));
                     }
                     if (next(it) != end) {
                         DeepRestorePath(out_child, next(it), end);
