@@ -1,3 +1,5 @@
+#pragma once
+
 #include "core/includes/Includes.h"
 #include "core/data/DValue.h"
 
@@ -135,17 +137,17 @@ namespace qtproject
 
                 StructureChecker() = default;
 
-                bool CheckValue(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                bool CheckValue(std::shared_ptr<DValue> source, uint16_t flags = 0) const {
                     if(flags == 0)
                         flags = Flags;
                     return DeepCheckBranch(Pattern, source, flags);
                 }
 
-                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0) {
+                void RestorePathes(std::shared_ptr<DValue> source, uint16_t flags = 0) const {
                     DeepRestorePathes(Pattern, source, flags);
                 }
 
-                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function, uint16_t flags = 0) {
+                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function, uint16_t flags = 0) const {
                     std::vector<std::string> path;
                     DeepGetRequiredInputs(Pattern, source, path, reciver_function, flags);
                 }
