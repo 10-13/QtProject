@@ -23,9 +23,9 @@ namespace qtproject {
             DValueSerializer(int indent) : indent_(indent) {
             }
             
-            bool Serialize(const std::istream& in, std::shared_ptr<DValue>& dvalue);
+            bool Serialize(std::istream& in, std::shared_ptr<DValue> dvalue);
 
-            bool Deserialize(std::ostream& out, std::shared_ptr<DValue>& dvalue);
+            bool Deserialize(std::ostream& out, std::shared_ptr<DValue> dvalue);
         };
 
     }
