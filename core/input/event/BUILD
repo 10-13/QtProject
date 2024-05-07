@@ -11,10 +11,11 @@ qt_ui_library(
 qt_cc_library(
     name = "main_window",
     srcs = [
-        "main_window.cpp",
+        "mainwindow.cpp",
     ],
-    hdrs = ["main_window.h"],
+    hdrs = ["mainwindow.h"],
     deps = [
+        "//core/data:dvalue",
         ":main_window_ui",
         "@rules_qt//:qt_widgets",
     ],

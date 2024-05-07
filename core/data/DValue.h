@@ -14,14 +14,14 @@ namespace qtproject
 
             public:
             DValue() = default;
-            DValue(std::string&& Name) : Name_(Name) {}
+            DValue(std::string Name) : Name_(Name) {}
 
             std::vector<std::shared_ptr<DValue>>& Subvalues() {
                 return Subvalues_;
             }
 
-            std::shared_ptr<DValue> Add(std::string&& Name) {
-                auto r = std::make_shared<DValue>(std::forward<std::string>(Name));
+            std::shared_ptr<DValue> Add(std::string Name) {
+                auto r = std::make_shared<DValue>(Name);
                 Subvalues_.push_back(r);
                 return r;
             }
@@ -66,7 +66,7 @@ namespace qtproject
                 return Subvalues_[index];
             }
 
-            static std::shared_ptr<DValue> AtPath(std::shared_ptr<DValue> value, std::vector<std::string>&& Path) {
+            static std::shared_ptr<DValue> AtPath(std::shared_ptr<DValue> value, std::vector<std::string>& Path) {
                 auto res = value;
                 for(auto& i : Path) {
                     if(res->At(i) == std::shared_ptr<DValue>{})
@@ -80,7 +80,7 @@ namespace qtproject
                 return Content();
             }
 
-            std::shared_ptr<DValue> operator[](std::string&& Name) {
+            std::shared_ptr<DValue> operator[](std::string Name) {
                 return At(std::forward<std::string>(Name));
             }
 
@@ -88,7 +88,7 @@ namespace qtproject
                 return Content(index);
             }
 
-            static std::shared_ptr<DValue> Create(std::string&& Name) {
+            static std::shared_ptr<DValue> Create(std::string Name) {
                 return std::make_shared<DValue>(std::forward<std::string>(Name));
             }
         };

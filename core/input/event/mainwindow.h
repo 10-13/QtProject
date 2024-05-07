@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include "DValue.h"
+#include "core/data/DValue.h"
 
 #include <QMainWindow>
 using namespace qtproject::data;
