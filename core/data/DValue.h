@@ -66,6 +66,16 @@ namespace qtproject
                 return Subvalues_[index];
             }
 
+            static std::shared_ptr<DValue> AtPath(std::shared_ptr<DValue> value, std::vector<std::string>&& Path) {
+                auto res = value;
+                for(auto& i : Path) {
+                    if(res->At(i) == std::shared_ptr<DValue>{})
+                        return std::shared_ptr<DValue>{};
+                    res = res->At(i);
+                }
+                return res;
+            }
+
             std::string& operator*() {
                 return Content();
             }
