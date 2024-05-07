@@ -122,7 +122,7 @@ namespace qtproject
                     DeepRestorePathes(Pattern, source, flags);
                 }
 
-                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0)ж
+                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0);
 
                 static bool CheckValue(std::string&& source, std::string request);
 
