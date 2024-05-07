@@ -29,8 +29,8 @@ TEST_CASE("Simple") {
         std::exit(1);
     }
 
-    serializer.Serialize(in, dvalue);
-    serializer.Deserialize(out, dvalue);
+    serializer.Dserialize(in, dvalue);
+    serializer.Serialize(out, dvalue);
 
     out.close();
     std::ifstream in2("output.txt");

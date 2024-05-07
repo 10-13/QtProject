@@ -7,25 +7,18 @@
 
 namespace qtproject {
     namespace data {
-        class DValueSerializer {
-           private:
-            std::string brackets_{"[]"};
-            int indent_{0};
-        
-           public:
+        class DValueSerializer {        
+        public:
+            char Open{'['};
+            char Close{']'};
+
+            bool Indent{false};
+
             DValueSerializer() = default;
-
-            DValueSerializer(std::string brackets, int indent = 0)
-             : brackets_(brackets)
-             , indent_(indent) {
-            }
-
-            DValueSerializer(int indent) : indent_(indent) {
-            }
             
-            bool Serialize(std::istream& in, std::shared_ptr<DValue> dvalue);
+            bool Serialize(std::ostream& in, std::shared_ptr<DValue> dvalue);
 
-            bool Deserialize(std::ostream& out, std::shared_ptr<DValue> dvalue);
+            bool Deserialize(std::istream& out, std::shared_ptr<DValue> dvalue);
         };
 
     }
