@@ -69,12 +69,12 @@ namespace qtproject
                     return true;
                 }
 
-                void DeepRestorePathes(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
-                    if (pattern->IsValue() && !CheckFlag(flags, Flags::TreatPatternValuesAsPath)) {
-                        return;
-                    }
-
+                static void DeepRestorePathes(std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, uint16_t flags) {
                     for (size_t i = 0; i < pattern->Size(); i++) {
+                        if (pattern->At(i)->IsValue() && !CheckFlag(flags, Flags::TreatPatternValuesAsPath)) {
+                            continue;
+                        }
+
                         std::shared_ptr<DValue> out_child;
                         if (out->At(pattern->Content(i)) == std::shared_ptr<DValue>{}) {
                             out_child = out->Add(std::forward<std::string>(pattern->Content(i)));
@@ -97,7 +97,30 @@ namespace qtproject
                         DeepRestorePath(out_child, next(it), end);
                     }
                 }
+
                 using Reciver = void(*)(const InputRequest& request);
+
+                static void DeepGetRequiredInputs(
+                std::shared_ptr<DValue> pattern, std::shared_ptr<DValue> out, std::vector<std::string> path,
+                Reciver reciver_function, int16_t flags) {
+                    path.push_back(pattern->Name());
+                    for (size_t i = 0; i < pattern->Size(); i++) {
+                        if (pattern->At(i)->IsValue()) {
+                            if (out->At(pattern->Content(i)) == std::shared_ptr<DValue>{}) {
+                                reciver_function({path, pattern->At(i)->Name(), i});
+                            }
+                        } else {
+                            std::shared_ptr<DValue> out_child;
+                            if (out->At(pattern->Content(i)) == std::shared_ptr<DValue>{}) {
+                                out_child = out->Add(std::forward<std::string>(pattern->Content(i)));
+                            } else {
+                                out_child = out->At(pattern->Content(i));
+                            }
+                            DeepGetRequiredInputs(pattern->At(i), out_child, path, reciver_function, flags);
+                        }                        
+                    }
+                    path.pop_back();
+                }
 
                 public:
                 enum Flags {
@@ -122,7 +145,10 @@ namespace qtproject
                     DeepRestorePathes(Pattern, source, flags);
                 }
 
-                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function , uint16_t flags = 0);
+                void GetRequiredInputs(std::shared_ptr<DValue> source, Reciver reciver_function, uint16_t flags = 0) {
+                    std::vector<std::string> path;
+                    DeepGetRequiredInputs(Pattern, source, path, reciver_function, flags);
+                }
 
                 static bool CheckValue(std::string&& source, std::string request);
 
