@@ -75,6 +75,10 @@ namespace qtproject {
             auto begin_pos = buffer.find_first_of(Open);
             buffer.erase(0, begin_pos);
 
+            if (buffer.empty()) {
+                return false;
+            }
+
             std::string_view view(buffer);
             RecursiveDeserialize(view, dvalue);
             return true;
