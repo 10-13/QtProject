@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string_view>
 
 #include "core/includes/Includes.h"
 #include "core/data/DValue.h"
@@ -16,9 +17,16 @@ namespace qtproject {
 
             DValueSerializer() = default;
             
-            bool Serialize(std::ostream& in, std::shared_ptr<DValue> dvalue);
+            bool Serialize(std::ostream&, std::shared_ptr<DValue>);
 
-            bool Deserialize(std::istream& out, std::shared_ptr<DValue> dvalue);
+            bool Deserialize(std::istream&, std::shared_ptr<DValue>);
+
+        //private:
+            void RecursiveDeserialize(std::string_view, std::shared_ptr<DValue>);
+
+            std::string_view GetCurrentName(std::string_view);
+
+            std::vector<std::string_view> GetChildren(std::string_view);
         };
 
     }
