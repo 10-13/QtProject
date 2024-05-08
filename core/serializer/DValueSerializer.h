@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 #include <string_view>
 
@@ -24,9 +25,11 @@ namespace qtproject {
         private:
             void RecursiveDeserialize(std::string_view, std::shared_ptr<DValue>);
 
-            std::string_view GetCurrentName(std::string_view);
+            std::string GetCurrentName(std::string_view);
 
             std::vector<std::string_view> GetChildren(std::string_view);
+
+            std::string GetValidStr(std::string&&);
         };
 
     }

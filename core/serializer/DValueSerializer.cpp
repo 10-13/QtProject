@@ -2,14 +2,20 @@
 
 namespace qtproject {
     namespace data {
+        std::string DValueSerializer::GetValidStr(std::string&& name) {
+            auto begin_pos = name.find_first_not_of("\n\t ");
+            auto end_pos = name.find_last_not_of("\n\t ");
+            return name.substr(begin_pos, end_pos - begin_pos + 1);
+        }
+
         void DValueSerializer::RecursiveDeserialize(std::string_view view, std::shared_ptr<DValue> dvalue) { 
-            dvalue->Name() = std::string(GetCurrentName(view));
+            dvalue->Name() = GetValidStr(GetCurrentName(view));
             for (auto child_view : GetChildren(view)) {
                 RecursiveDeserialize(child_view, dvalue->Add(""));
             }
         }
 
-        std::string_view DValueSerializer::GetCurrentName(std::string_view view) {
+        std::string DValueSerializer::GetCurrentName(std::string_view view) {
             size_t end_pos = 0;
             for (size_t i = 1; i != view.size(); ++i) { // skip first open bracket
                 if (view[i] == Open || view[i] == Close) {
@@ -17,7 +23,7 @@ namespace qtproject {
                     break;
                 }
             }
-            return view.substr(1, end_pos - 1);
+            return std::string(view.substr(1, end_pos - 1));
         }
 
         std::vector<std::string_view> DValueSerializer::GetChildren(std::string_view view) {
@@ -52,6 +58,7 @@ namespace qtproject {
             }
             in.seekg(-1, std::ios::cur);
 
+            // Read block
             std::string buffer;
             size_t bracket_count = 0;
             do{
@@ -63,6 +70,10 @@ namespace qtproject {
                 }
                 buffer.push_back(symb_buf);
             } while(bracket_count != 0);
+
+            // Clear from garbage
+            auto begin_pos = buffer.find_first_of(Open);
+            buffer.erase(0, begin_pos);
 
             std::string_view view(buffer);
             RecursiveDeserialize(view, dvalue);
