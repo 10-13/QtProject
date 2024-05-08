@@ -1,5 +1,5 @@
 #include <catch2/catch_all.hpp>
-#include <fstream>
+#include <sstream>
 
 #include "core/includes/Includes.h"
 #include "core/serializer/DValueSerializer.h"
@@ -53,41 +53,44 @@ TEST_CASE("DValueSerializer::GetChildren test") {
     }
 }
 
-/*
-TEST_CASE("std::ifstream and std::ofstream test") {
-    DValueSerializer serializer;
-    std::shared_ptr<DValue> dvalue;
 
-    std::ifstream in("input.txt");
-    std::ofstream out("output.txt");
-
-    if(!in) {
-        FAIL("Cannot open input file.");
-        std::exit(1);
+TEST_CASE("Serialize test") {
+    {
+        DValueSerializer serializer;
+        std::shared_ptr<DValue> dvalue = DValue::Create("main");
+        dvalue->Add("child1");
+        dvalue->Add("child2");
+        dvalue->Add("child3");
+        std::ostringstream out;
+        serializer.Serialize(out, dvalue);
+        REQUIRE(out.str() == "[main[child1][child2][child3]]");
     }
-
-    if (in.peek() == std::ifstream::traits_type::eof()) {
-        FAIL("Input file is empty.");
-        std::exit(1);
+    {
+        DValueSerializer serializer;
+        std::shared_ptr<DValue> dvalue = DValue::Create("main");
+        dvalue->Add("child1");
+        dvalue->Add("child2");
+        dvalue->Add("child3");
+        dvalue->At(0)->Add("child1_1");
+        dvalue->At(0)->Add("child1_2");
+        dvalue->At(1)->Add("child2_1");
+        dvalue->At(1)->Add("child2_2");
+        dvalue->At(1)->At(0)->Add("child2_1_1");
+        std::ostringstream out;
+        serializer.Serialize(out, dvalue);
+        REQUIRE(out.str() == "[main[child1[child1_1][child1_2]][child2[child2_1[child2_1_1]][child2_2]][child3]]");
     }
-
-    if(!out) {
-        FAIL("Cannot open output file.");
-        std::exit(1);
-    }
-
-    serializer.Deserialize(in, dvalue);
-    serializer.Serialize(out, dvalue);
-
-    out.close();
-    std::ifstream in2("output.txt");
-
-    std::string buf1, buf2;
-    while (std::getline(in, buf1) && std::getline(in2, buf2)) {
-        REQUIRE(buf1 == buf2);
-    }
-
-    in.close();
-    in2.close();
 }
-*/
+
+TEST_CASE("Deserialize test") {
+    {
+        std::stringstream ss("[main[child1][child2][child3]]");
+        DValueSerializer serializer;
+        std::shared_ptr<DValue> dvalue = DValue::Create("");
+        serializer.Deserialize(ss, dvalue);
+        
+        ss.str("");
+        serializer.Serialize(ss, dvalue);
+        REQUIRE(ss.str() == "[main[child1][child2][child3]]");
+    }
+}

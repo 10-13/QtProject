@@ -1,1 +1,0 @@
-[Hello[child1[child1_1,child1_2]][child2]]

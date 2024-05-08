@@ -3,7 +3,7 @@
 namespace qtproject {
     namespace data {
         void DValueSerializer::RecursiveDeserialize(std::string_view view, std::shared_ptr<DValue> dvalue) { 
-            dvalue = DValue::Create(std::string(GetCurrentName(view)));
+            dvalue->Name() = std::string(GetCurrentName(view));
             for (auto child_view : GetChildren(view)) {
                 RecursiveDeserialize(child_view, dvalue->Add(""));
             }
@@ -22,7 +22,6 @@ namespace qtproject {
 
         std::vector<std::string_view> DValueSerializer::GetChildren(std::string_view view) {
             std::vector<std::string_view> children;
-            std::cerr << view << std::endl;
             size_t start_pos = 1;
             size_t end_pos = 1;
             size_t bracket_count = 0;
@@ -44,9 +43,10 @@ namespace qtproject {
             return children;
         }
 
-        // TODO: Add reading by one dvalue-tree
         bool DValueSerializer::Deserialize(std::istream& in, std::shared_ptr<DValue> dvalue) {
+            // TODO: Add reading by one dvalue-tree
             std::string buffer(std::istreambuf_iterator<char>(in), {});
+
             if (buffer.empty()) {
                 return false;
             }
@@ -56,14 +56,12 @@ namespace qtproject {
             return true;
         }
 
-        bool DValueSerializer::Serialize(std::ostream& out, std::shared_ptr<DValue> dvalues) {
+        void DValueSerializer::Serialize(std::ostream& out, std::shared_ptr<DValue> dvalues) {
             out << Open << dvalues->Name();
-            for (size_t i = 0; i < dvalues->Size(); i++) {
-                Serialize(out, dvalues->At(i));
+            for (auto& sub_dvalue : dvalues->Subvalues()) {
+                Serialize(out, sub_dvalue);
             }
             out << Close;
-            
-            return true;
         }
     }
 }

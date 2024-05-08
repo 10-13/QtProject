@@ -17,7 +17,7 @@ namespace qtproject {
 
             DValueSerializer() = default;
             
-            bool Serialize(std::ostream&, std::shared_ptr<DValue>);
+            void Serialize(std::ostream&, std::shared_ptr<DValue>);
 
             bool Deserialize(std::istream&, std::shared_ptr<DValue>);
 
