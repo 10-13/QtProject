@@ -30,6 +30,8 @@ namespace qtproject {
             std::vector<std::string_view> GetChildren(std::string_view);
 
             std::string GetValidStr(std::string&&);
+
+            void RecursiveSerialize(std::ostream&, std::shared_ptr<DValue>, size_t);
         };
 
     }

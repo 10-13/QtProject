@@ -1,5 +1,6 @@
 #include <catch2/catch_all.hpp>
 #include <sstream>
+#include <iostream>
 
 #include "core/includes/Includes.h"
 #include "core/serializer/DValueSerializer.h"
@@ -43,6 +44,7 @@ TEST_CASE("Deserialize test") {
         serializer.Deserialize(ss, dvalue);
         
         ss.str("");
+        serializer.Indent = false;
         serializer.Serialize(ss, dvalue);
         REQUIRE(ss.str() == "[main[child1][child2][child3]]");
     }

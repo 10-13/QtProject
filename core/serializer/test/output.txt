@@ -1,0 +1,18 @@
+[main
+	[child1
+		[child1_1
+		]
+		[child1_2
+		]
+		[child1_3
+			[child1_1_1
+			]
+		]
+	]
+	[child2
+	]
+	[child3
+		[child3_1
+		]
+	]
+]

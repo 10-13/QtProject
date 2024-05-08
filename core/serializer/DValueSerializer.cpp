@@ -80,12 +80,21 @@ namespace qtproject {
             return true;
         }
 
-        void DValueSerializer::Serialize(std::ostream& out, std::shared_ptr<DValue> dvalues) {
-            out << Open << dvalues->Name();
-            for (auto& sub_dvalue : dvalues->Subvalues()) {
-                Serialize(out, sub_dvalue);
+        void DValueSerializer::RecursiveSerialize(std::ostream& out, 
+                                    std::shared_ptr<DValue> dvalues, size_t depth) {
+            if (Indent) {
+                out << (depth > 0 ? "\n" : "") << std::string(depth, '\t');
             }
+            out << Open << dvalues->Name();
+            for (auto dvalue : dvalues->Subvalues()) {
+                RecursiveSerialize(out, dvalue, depth + 1);
+            }
+            out << (Indent ? "\n" + std::string(depth, '\t') : "");
             out << Close;
+        }
+
+        void DValueSerializer::Serialize(std::ostream& out, std::shared_ptr<DValue> dvalues) {
+            RecursiveSerialize(out, dvalues, 0);
         }
     }
 }
