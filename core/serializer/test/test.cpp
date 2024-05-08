@@ -37,7 +37,7 @@ TEST_CASE("DValueSerializer::GetChildren test") {
     std::string_view view = "[name[child1[child1_1][child1_2]][child2]]";
     std::vector<std::string_view> expected = {
         "[child1[child1_1][child1_2]]",
-        "[child1_2]]"
+        "[child2]"
     };
     auto current = serializer.GetChildren(view);
     Check(current, expected);

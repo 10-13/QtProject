@@ -22,13 +22,14 @@ namespace qtproject {
 
         std::vector<std::string_view> DValueSerializer::GetChildren(std::string_view view) {
             std::vector<std::string_view> children;
+            std::cerr << view << std::endl;
             size_t start_pos = 1;
             size_t end_pos = 1;
             size_t bracket_count = 0;
             for (size_t i = 1; i != view.size(); ++i) { // skip first open bracket
                 if (view[i] == Open) {
                     ++bracket_count;
-                    if (bracket_count == 0) {
+                    if (bracket_count == 1) {
                         start_pos = i;
                     }
                 } else if (view[i] == Close) {
@@ -38,13 +39,6 @@ namespace qtproject {
                         auto substring = view.substr(start_pos, end_pos - start_pos + 1);
                         children.push_back(substring);
                     }
-                }
-
-                if (bracket_count == 0 && view[i] == Open) {
-                    start_pos = i;
-                } else if (bracket_count == 0 && view[i] == Close) {
-                    end_pos = i;
-                    children.push_back(view.substr(start_pos, end_pos - start_pos + 1));
                 }
             }
             return children;
