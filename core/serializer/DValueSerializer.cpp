@@ -44,12 +44,25 @@ namespace qtproject {
         }
 
         bool DValueSerializer::Deserialize(std::istream& in, std::shared_ptr<DValue> dvalue) {
-            // TODO: Add reading by one dvalue-tree
-            std::string buffer(std::istreambuf_iterator<char>(in), {});
+            [[maybe_unused]] char symb_buf;
+            in >> symb_buf;
 
-            if (buffer.empty()) {
+            if (in.eof()) {
                 return false;
             }
+            in.seekg(-1, std::ios::cur);
+
+            std::string buffer;
+            size_t bracket_count = 0;
+            do{
+                in >> symb_buf;
+                if(symb_buf == Open) {
+                    ++bracket_count;
+                } else if(symb_buf == Close) {
+                    --bracket_count;
+                }
+                buffer.push_back(symb_buf);
+            } while(bracket_count != 0);
 
             std::string_view view(buffer);
             RecursiveDeserialize(view, dvalue);

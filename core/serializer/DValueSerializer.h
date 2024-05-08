@@ -21,7 +21,7 @@ namespace qtproject {
 
             bool Deserialize(std::istream&, std::shared_ptr<DValue>);
 
-        //private:
+        private:
             void RecursiveDeserialize(std::string_view, std::shared_ptr<DValue>);
 
             std::string_view GetCurrentName(std::string_view);
