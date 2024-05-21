@@ -110,14 +110,6 @@ http_archive(
 
 http_archive(
     name = "rules_qt",
-    sha256 = BAZEL_CLANG_FORMAT_SHA,
-    url = "https://github.com/oliverlee/bazel_clang_format/archive/{commit}.tar.gz".format(
-        commit = BAZEL_CLANG_FORMAT_COMMIT,
-    ),
-)
-
-http_archive(
-    name = "rules_qt",
     sha256 = "bd8253247c0e45e6a180c87083f20910159e36cd67f6b11d5d3d865a61ea52cd",
     strip_prefix = "rules_qt6-0.0.3",
     url = "https://github.com/Vertexwahn/rules_qt6/releases/download/v0.0.3/rules_qt6-v0.0.3.tar.gz",
